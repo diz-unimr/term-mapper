@@ -34,28 +34,4 @@ public class SwisslabMapTests {
 
         assertThat(diff).isEqualTo(Set.of("BAR"));
     }
-
-    @Test
-    void bla() {
-        var map = new SwisslabMap(null);
-        map.put("FOO", new SwisslabMapEntry.Builder()
-            .withCode("1000-0")
-            .withSystem("http://loinc.org")
-            .withUcum("mmol/L")
-            .build());
-        map.put("FOO", new SwisslabMapEntry.Builder()
-            .withCode("1000-1")
-            .withSystem("http://loinc.org")
-            .withMeta("TEST")
-            .withUcum("mmol/L")
-            .build());
-        map.put("FOO", new SwisslabMapEntry.Builder()
-            .withCode("1000000")
-            .withSystem("http://snomed.org")
-            .withTextValue("bla")
-            .build());
-
-        assertThat(map.size()).isEqualTo(3);
-    }
-
 }

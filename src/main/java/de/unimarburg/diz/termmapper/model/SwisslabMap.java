@@ -22,8 +22,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.zip.ZipFile;
+
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.nullsLast;
 
 @Getter
 @Slf4j
@@ -124,7 +129,10 @@ public class SwisslabMap {
 
     public void put(String code, SwisslabMapEntry entry) {
         // source: entries are ordered with null values first
-        var entries = internalMap.computeIfAbsent(code, s -> new HashSet<>());
+        var entries = internalMap.computeIfAbsent(code,
+            s -> new TreeSet<>(
+                comparing(SwisslabMapEntry::getMeta,
+                    nullsLast(naturalOrder()))));
         entries.add(entry);
     }
 

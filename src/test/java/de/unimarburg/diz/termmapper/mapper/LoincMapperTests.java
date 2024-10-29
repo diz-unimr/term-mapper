@@ -55,18 +55,21 @@ public class LoincMapperTests {
         testMap.put(testCode, new SwisslabMapEntry.Builder()
             .withCode("1000-0")
             .withSystem("http://loinc.org")
+            .withSwlUnit("old unit")
             .withUcum("mmol/L")
             .build());
         testMap.put(testCode, new SwisslabMapEntry.Builder()
             .withMeta("meta1")
             .withCode("1000-1")
             .withSystem("http://loinc.org")
+            .withSwlUnit("old unit")
             .withUcum("mmol/L")
             .build());
         testMap.put(testCode, new SwisslabMapEntry.Builder()
             .withMeta("meta2")
             .withCode("1000-2")
             .withSystem("http://loinc.org")
+            .withSwlUnit("old unit")
             .withUcum("mmol/L")
             .build());
     }
