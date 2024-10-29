@@ -15,7 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
     properties = {
         "mapping.loinc.local=mapping-swl-loinc.zip",
         "spring.cloud.stream.kafka.streams.binder.replicationFactor=1",
-        "spring.cloud.stream.kafka.streams.binder.minPartitionCount=1"})
+        "spring.cloud.stream.kafka.streams.binder.minPartitionCount=1",
+        "spring.cloud.stream.bindings.process-in-0=lab"})
 public class TermMapperApplicationTests {
 
     @Test
