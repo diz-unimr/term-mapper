@@ -7,7 +7,7 @@ The processor maps terminologies like LOINC, UCUM and SNOMED CT from local
 codings and values.
 
 It currently supports parsing laboratory data from FHIR resources
-(i.e. Observation as FHIR Bundle entrie resources).
+(i.e. Observation as FHIR Bundle entry resources).
 
 ## Mappings
 
