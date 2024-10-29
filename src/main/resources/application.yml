@@ -1,0 +1,81 @@
+spring:
+  jmx:
+    enabled: true
+  kafka:
+    bootstrapServers: ${BOOTSTRAP_SERVERS:localhost:9092}
+    security.protocol: ${SECURITY_PROTOCOL:PLAINTEXT}
+    ssl:
+      trust-store-location: file://${SSL_TRUST_STORE_LOCATION_INTERNAL:/opt/lab-to-fhir/ssl/truststore.jks}
+      trust-store-password: ${SSL_TRUST_STORE_PASSWORD}
+      key-store-location: file://${SSL_KEY_STORE_LOCATION_INTERNAL:/opt/lab-to-fhir/ssl/keystore.jks}
+      key-store-password: ${SSL_KEY_STORE_PASSWORD}
+
+  cloud:
+    function:
+      definition: process
+    stream:
+      bindings:
+        process-in-0:
+          destination: ${INPUT_TOPIC:lab-fhir}
+          consumer:
+            auto-startup: false
+        process-out-0:
+          destination: ${OUTPUT_TOPIC:lab-fhir-term}
+        update-in-0:
+          destination: ${INPUT_TOPIC:lab-fhir}
+          consumer:
+            auto-startup: false
+        update-out-0:
+          destination: ${OUTPUT_TOPIC:lab-fhir-term}
+      kafka:
+        streams:
+          binder:
+            functions:
+              process:
+                applicationId: term-mapper
+              update:
+                applicationId: term-mapper-update
+            configuration:
+              compression.type: gzip
+              max.request.size: 5242880
+              security.protocol: ${SECURITY_PROTOCOL:PLAINTEXT}
+              spring.json.use.type.headers: "false"
+            replicationFactor: 3
+            minPartitionCount: 3
+
+fhir:
+  systems:
+    serviceRequestId: "https://fhir.diz.uni-marburg.de/sid/lab-service-request-id"
+    diagnosticReportId: "https://fhir.diz.uni-marburg.de/sid/lab-report-id"
+    observationId: "https://fhir.diz.uni-marburg.de/sid/lab-surrogate-observation-id"
+    patientId: "https://fhir.diz.uni-marburg.de/sid/patient-id"
+    encounterId: "https://fhir.diz.uni-marburg.de/sid/encounter-admit-id"
+    assignerId: "https://www.medizininformatik-initiative.de/fhir/core/NamingSystem/org-identifier"
+    assignerCode: "UKMR"
+    laboratorySystem: "https://fhir.diz.uni-marburg.de/CodeSystem/swisslab-code"
+    laboratoryUnitSystem: "https://fhir.diz.uni-marburg.de/CodeSystem/swisslab-unit"
+
+mapping:
+  loinc:
+    version: "4.0.0"
+    credentials:
+      user:
+      password:
+    proxy:
+    local:
+
+management:
+  server:
+    port: 8080
+  endpoints:
+    web:
+      exposure:
+        include: "health, prometheus, info, metric"
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    org.springframework.kafka.config: info
+    de.unimarburg.diz.termmapper: ${LOG_LEVEL:info}

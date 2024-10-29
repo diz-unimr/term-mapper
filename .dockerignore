@@ -1,0 +1,7 @@
+bin/
+build/
+.idea/
+dev/
+deploy/
+connect/
+**/application-dev.yml

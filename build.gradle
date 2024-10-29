@@ -1,0 +1,97 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'checkstyle'
+}
+
+
+group = 'de.unimarburg.diz'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = "17"
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/snapshot' }
+    maven { url 'https://repo.spring.io/milestone' }
+}
+
+ext {
+    set('springBootVersion', "3.2.3")
+    set('springCloudDepsVersion', "2023.0.0")
+    set('springCloudStreamVersion', "4.1.0")
+    set('springKafkaVersion', "3.1.1")
+    set("hapiFhirVersion", "6.10.5")
+}
+
+dependencies {
+    // spring cloud stream kafka
+    implementation "org.springframework.cloud:spring-cloud-stream-binder-kafka:$springCloudStreamVersion"
+    implementation "org.springframework.cloud:spring-cloud-stream-binder-kafka-streams:$springCloudStreamVersion"
+    implementation "org.springframework.cloud:spring-cloud-starter-stream-kafka:$springCloudStreamVersion"
+    implementation "org.springframework.kafka:spring-kafka:$springKafkaVersion"
+
+    // retry
+    implementation 'org.springframework.retry:spring-retry:2.0.3'
+    implementation 'org.springframework:spring-aspects:6.0.11'
+
+    // metrics
+    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.12.3'
+
+    // hapi fhir
+    implementation "ca.uhn.hapi.fhir:hapi-fhir-base:$hapiFhirVersion"
+    implementation "ca.uhn.hapi.fhir:hapi-fhir-client:$hapiFhirVersion"
+    implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:$hapiFhirVersion"
+    implementation "ca.uhn.hapi.fhir:hapi-fhir-validation:$hapiFhirVersion"
+    implementation "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:$hapiFhirVersion"
+
+    // mapper
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.16.1'
+
+    // unit tests
+    testImplementation 'org.apache.kafka:kafka-streams-test-utils:3.6.1'
+    testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.15.8'
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion") {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation "org.springframework.kafka:spring-kafka-test:$springKafkaVersion"
+    testImplementation 'org.assertj:assertj-core:3.25.3'
+
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.34'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudDepsVersion"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = false
+    }
+}
+
+check.dependsOn jacocoTestReport
+
+
+jar {
+    enabled = false
+}
+
+bootJar {
+    mainClass.set('de.unimarburg.diz.termmapper.TermMapperApplication')
+}

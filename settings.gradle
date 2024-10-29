@@ -1,0 +1,5 @@
+plugins {
+    id("com.autonomousapps.build-health") version "2.1.4"
+}
+
+rootProject.name = 'term-mapper'
