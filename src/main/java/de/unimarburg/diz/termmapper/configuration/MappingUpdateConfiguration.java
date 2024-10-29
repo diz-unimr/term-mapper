@@ -11,6 +11,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.TopicPartition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,7 +34,9 @@ public class MappingUpdateConfiguration {
                                           MappingProperties mappingProperties,
                                           LabOffsets labOffsets,
                                           Consumer<String, MappingUpdate> consumer,
-                                          Producer<String, MappingUpdate> producer)
+                                          Producer<String, MappingUpdate> producer,
+                                          @Value("${spring.cloud.stream.bindings.process-in-0}")
+                                          String key)
         throws ExecutionException, InterruptedException, IOException {
         // check versions
         var configuredVersion = swisslabMap.getMetadata().getVersion();
@@ -44,7 +47,7 @@ public class MappingUpdateConfiguration {
             // job runs the first time: save current state
             lastUpdate = new MappingUpdate(configuredVersion, null, List.of());
             try {
-                saveMappingUpdate(producer, lastUpdate);
+                saveMappingUpdate(producer, lastUpdate, key);
             } catch (InterruptedException | ExecutionException e) {
                 LOG.error("Failed to save mapping update to topic.");
                 throw e;
@@ -82,18 +85,18 @@ public class MappingUpdateConfiguration {
                 updates);
 
         // save new mapping update
-        saveMappingUpdate(producer, update);
+        saveMappingUpdate(producer, update, key);
 
         return new MappingInfo(update, false);
     }
 
     @SuppressWarnings("checkstyle:LineLength")
     private void saveMappingUpdate(Producer<String, MappingUpdate> producer,
-                                   MappingUpdate mappingUpdate)
+                                   MappingUpdate mappingUpdate, String key)
         throws ExecutionException, InterruptedException {
 
         producer.send(
-                new ProducerRecord<>("mapping", "lab-update", mappingUpdate))
+                new ProducerRecord<>("mapping", key, mappingUpdate))
             .get();
     }
 
@@ -103,6 +106,8 @@ public class MappingUpdateConfiguration {
 
         var partition = new TopicPartition(topic, 0);
         var partitions = List.of(partition);
+
+        // TODO read latest by key
 
         try (consumer) {
             consumer.assign(partitions);
