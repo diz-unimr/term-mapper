@@ -3,10 +3,10 @@
 
 > Kafka FHIR🔥 terminology mapping processor
 
-The processor maps terminologies like LOINC, UCUM and SNOMED CT from local 
+The processor maps terminologies like LOINC, UCUM and SNOMED CT from local
 codings and values.
 
-It currently supports parsing laboratory data from FHIR resources 
+It currently supports parsing laboratory data from FHIR resources
 (i.e. Observation as FHIR Bundle entrie resources).
 
 ## Mappings
@@ -63,23 +63,10 @@ update consumer group is deleted.
 On startup, the application checks the configured mapping version and
 determines a diff between the mappings of the current and the last used
 mapping version. This data is stored in the Kafka topic `mapping` with the key
-`aim-lab-update`.
+`lab-update`.
 
 In case there are no changes or the mapping versions used are equal, the
 update processor is not started.
-
-## Tests
-
-This project includes unit and integration tests.
-
-### Setup
-
-FHIR validation tests need the profile files used in this processor (i.e. MII profiles). Those are managed as NPM
-dependencies ([package.json](package.json)) and must be installed locally prior to testing:
-
-```sh
-npm i
-```
 
 ## Error handling
 
