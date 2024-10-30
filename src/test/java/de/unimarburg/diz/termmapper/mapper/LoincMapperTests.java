@@ -118,17 +118,12 @@ public class LoincMapperTests {
         // act
         loincMapper.map(obs, null);
 
-        // assert value has new unit and code
-        assertThat(obs.getValueQuantity())
-            .extracting(Quantity::getUnit, Quantity::getUnit)
-            .containsOnly("mmol/L");
+        // assert value has new code and old (human readable) unit
+        assertThat(obs.getValueQuantity().getCode()).isEqualTo("mmol/L");
+        assertThat(obs.getValueQuantity().getUnit()).isEqualTo("old unit");
         // .. as well as reference range unit and code
         assertThat(obs.getReferenceRange())
             .flatExtracting(x -> x
-                .getLow()
-                .getUnit(), x -> x
-                .getHigh()
-                .getUnit(), x -> x
                 .getLow()
                 .getCode(), x -> x
                 .getHigh()
