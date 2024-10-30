@@ -35,7 +35,7 @@ public class MappingUpdateConfiguration {
                                           MapperOffsets labOffsets,
                                           Consumer<String, MappingUpdate> consumer,
                                           Producer<String, MappingUpdate> producer,
-                                          @Value("${spring.cloud.stream.bindings.process-in-0}")
+                                          @Value("${spring.cloud.stream.bindings.process-in-0.destination}")
                                           String key)
         throws ExecutionException, InterruptedException, IOException {
         // check versions

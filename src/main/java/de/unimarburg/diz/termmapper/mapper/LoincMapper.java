@@ -90,7 +90,7 @@ public class LoincMapper extends SwisslabMapper {
 
                 obs
                     .getValueQuantity()
-                    .setUnit(e.getUcum())
+                    .setUnit(obs.getValueQuantity().getUnit())
                     .setCode(e.getUcum())
                     .setSystem("http://unitsofmeasure.org");
                 obs
@@ -99,14 +99,14 @@ public class LoincMapper extends SwisslabMapper {
                         if (quantity.hasLow()) {
                             quantity
                                 .getLow()
-                                .setUnit(e.getUcum())
+                                .setUnit(obs.getValueQuantity().getUnit())
                                 .setCode(e.getUcum())
                                 .setSystem("http://unitsofmeasure.org");
                         }
                         if (quantity.hasHigh()) {
                             quantity
                                 .getHigh()
-                                .setUnit(e.getUcum())
+                                .setUnit(obs.getValueQuantity().getUnit())
                                 .setCode(e.getUcum())
                                 .setSystem("http://unitsofmeasure.org");
                         }
