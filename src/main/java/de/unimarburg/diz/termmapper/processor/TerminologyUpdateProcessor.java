@@ -1,7 +1,7 @@
 package de.unimarburg.diz.termmapper.processor;
 
 import de.unimarburg.diz.termmapper.UpdateCompleted;
-import de.unimarburg.diz.termmapper.model.LabOffsets;
+import de.unimarburg.diz.termmapper.model.MapperOffsets;
 import de.unimarburg.diz.termmapper.model.MappingInfo;
 import de.unimarburg.diz.termmapper.model.MappingUpdate;
 import org.apache.kafka.streams.kstream.KStream;
@@ -37,7 +37,7 @@ public class TerminologyUpdateProcessor {
     public TerminologyUpdateProcessor(
         @Qualifier("termMapper") Function<Bundle, Bundle> termMapper,
         @Nullable MappingInfo mappingInfo,
-        LabOffsets offsets,
+        MapperOffsets offsets,
         ApplicationEventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
         this.termMapper = termMapper;

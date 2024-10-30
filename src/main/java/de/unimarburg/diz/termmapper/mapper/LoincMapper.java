@@ -69,18 +69,22 @@ public class LoincMapper extends SwisslabMapper {
                 obs
                     .getCode()
                     .getCoding()
-                    // TODO check order
                     .add(0, loincCoding);
 
                 // TODO keep original unit in extension(?) or 'value'
 
                 // map ucum in value and referenceRange(s)
-                if (e.getUcum() == null
-                    || !obs.hasValueQuantity()
-                    || !e.getSwlUnit()
-                    .equals(obs.getValueQuantity().getUnit())) {
-                    // not ucum mapping or swl units don't match
-                    // TODO log
+                if (e.getUcum() == null || !obs.hasValueQuantity()) {
+                    // no ucum mapping exists or value is no quantity
+                    return;
+                }
+
+                if (!e.getSwlUnit().equals(obs.getValueQuantity().getUnit())) {
+                    // no ucum mapping exists or swl units don't match
+                    log.warn("Swisslab unit ({}) doesn't match source unit "
+                            + "from UCUM mapping: {} -> {}",
+                        obs.getValueQuantity().getUnit(), e.getSwlUnit(),
+                        e.getUcum());
                     return;
                 }
 

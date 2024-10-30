@@ -1,6 +1,6 @@
 package de.unimarburg.diz.termmapper.configuration;
 
-import de.unimarburg.diz.termmapper.model.LabOffsets;
+import de.unimarburg.diz.termmapper.model.MapperOffsets;
 import de.unimarburg.diz.termmapper.model.MappingUpdate;
 import de.unimarburg.diz.termmapper.serializer.FhirSerde;
 import org.apache.kafka.clients.admin.AdminClient;
@@ -68,11 +68,11 @@ public class KafkaConfiguration {
 
 
     @Bean
-    public LabOffsets getOffsets(AdminClientProvider kafkaAdmin,
-                                 @Value("${spring.cloud.stream.kafka.streams.binder.functions.process.applicationId}")
-                                 String processGroup,
-                                 @Value("${spring.cloud.stream.kafka.streams.binder.functions.update.applicationId}")
-                                 String updateGroup)
+    public MapperOffsets getOffsets(AdminClientProvider kafkaAdmin,
+                                    @Value("${spring.cloud.stream.kafka.streams.binder.functions.process.applicationId}")
+                                    String processGroup,
+                                    @Value("${spring.cloud.stream.kafka.streams.binder.functions.update.applicationId}")
+                                    String updateGroup)
         throws ExecutionException, InterruptedException {
         // get current offsets
         try (var client = kafkaAdmin.createClient()) {
@@ -82,7 +82,7 @@ public class KafkaConfiguration {
             var updateOffsets = client.listConsumerGroupOffsets(updateGroup)
                 .partitionsToOffsetAndMetadata().get();
 
-            return new LabOffsets(processOffsets.entrySet().stream().collect(
+            return new MapperOffsets(processOffsets.entrySet().stream().collect(
                 Collectors.toMap(e -> e.getKey().partition(),
                     Map.Entry::getValue)), updateOffsets.entrySet().stream()
                 .collect(Collectors.toMap(e -> e.getKey().partition(),

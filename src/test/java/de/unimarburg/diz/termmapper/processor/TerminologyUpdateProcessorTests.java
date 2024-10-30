@@ -5,7 +5,7 @@ import de.unimarburg.diz.termmapper.configuration.FhirProperties;
 import de.unimarburg.diz.termmapper.configuration.MappingConfiguration;
 import de.unimarburg.diz.termmapper.mapper.LoincMapper;
 import de.unimarburg.diz.termmapper.mapper.TerminologyMapper;
-import de.unimarburg.diz.termmapper.model.LabOffsets;
+import de.unimarburg.diz.termmapper.model.MapperOffsets;
 import de.unimarburg.diz.termmapper.model.MappingInfo;
 import de.unimarburg.diz.termmapper.model.MappingUpdate;
 import de.unimarburg.diz.termmapper.processor.TerminologyUpdateProcessorTests.KafkaConfig;
@@ -106,9 +106,9 @@ public class TerminologyUpdateProcessorTests extends BaseProcessorTests {
 
         @SuppressWarnings("checkstyle:MagicNumber")
         @Bean
-        LabOffsets testOffsets() {
+        MapperOffsets testOffsets() {
             // offset target will be 3 on partition 0
-            return new LabOffsets(Map.of(0, new OffsetAndMetadata(3L)),
+            return new MapperOffsets(Map.of(0, new OffsetAndMetadata(3L)),
                 Map.of());
         }
 

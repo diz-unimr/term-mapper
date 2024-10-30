@@ -1,6 +1,6 @@
 package de.unimarburg.diz.termmapper.configuration;
 
-import de.unimarburg.diz.termmapper.model.LabOffsets;
+import de.unimarburg.diz.termmapper.model.MapperOffsets;
 import de.unimarburg.diz.termmapper.model.MappingInfo;
 import de.unimarburg.diz.termmapper.model.MappingUpdate;
 import de.unimarburg.diz.termmapper.model.SwisslabMap;
@@ -32,7 +32,7 @@ public class MappingUpdateConfiguration {
     @Bean("mappingInfo")
     public MappingInfo buildMappingUpdate(SwisslabMap swisslabMap,
                                           MappingProperties mappingProperties,
-                                          LabOffsets labOffsets,
+                                          MapperOffsets labOffsets,
                                           Consumer<String, MappingUpdate> consumer,
                                           Producer<String, MappingUpdate> producer,
                                           @Value("${spring.cloud.stream.bindings.process-in-0}")
