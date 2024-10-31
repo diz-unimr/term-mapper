@@ -45,11 +45,11 @@ public class MappingConfiguration {
     }
 
     private Resource getMappingFile(
-        @Value("${mapping.loinc.version}") String version,
-        @Value("${mapping.loinc.credentials.user}") String user,
-        @Value("${mapping.loinc.credentials.password}") String password,
-        @Value("${mapping.loinc.proxy}") String proxyServer,
-        @Value("${mapping.loinc.local}") String localPkg) throws IOException {
+        @Value("${mapping.package.version}") String version,
+        @Value("${mapping.package.credentials.user}") String user,
+        @Value("${mapping.package.credentials.password}") String password,
+        @Value("${mapping.package.proxy}") String proxyServer,
+        @Value("${mapping.package.local}") String localPkg) throws IOException {
 
         return ResourceHelper.getMappingFile(version, user, password,
             proxyServer, localPkg);

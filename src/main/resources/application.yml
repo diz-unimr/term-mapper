@@ -5,9 +5,9 @@ spring:
     bootstrapServers: ${BOOTSTRAP_SERVERS:localhost:9092}
     security.protocol: ${SECURITY_PROTOCOL:PLAINTEXT}
     ssl:
-      trust-store-location: file://${SSL_TRUST_STORE_LOCATION_INTERNAL:/opt/lab-to-fhir/ssl/truststore.jks}
+      trust-store-location: file://${SSL_TRUST_STORE_LOCATION_INTERNAL:/opt/term-mapper/ssl/truststore.jks}
       trust-store-password: ${SSL_TRUST_STORE_PASSWORD}
-      key-store-location: file://${SSL_KEY_STORE_LOCATION_INTERNAL:/opt/lab-to-fhir/ssl/keystore.jks}
+      key-store-location: file://${SSL_KEY_STORE_LOCATION_INTERNAL:/opt/term-mapper/ssl/keystore.jks}
       key-store-password: ${SSL_KEY_STORE_PASSWORD}
 
   cloud:
@@ -56,7 +56,7 @@ fhir:
     laboratoryUnitSystem: "https://fhir.diz.uni-marburg.de/CodeSystem/swisslab-unit"
 
 mapping:
-  loinc:
+  package:
     version: "4.0.0"
     credentials:
       user:

@@ -35,10 +35,10 @@ import static org.assertj.core.api.Assertions.assertThat;
     TerminologyMapper.class,
     LoincMapper.class, FhirConfiguration.class, MappingConfiguration.class,
     KafkaConfig.class})
-@TestPropertySource(properties = {"mapping.loinc.version=''",
-    "mapping.loinc.credentials.user=''",
-    "mapping.loinc.credentials.password=''",
-    "mapping.loinc.local=mapping-swl-loinc.zip"})
+@TestPropertySource(properties = {"mapping.package.version=''",
+    "mapping.package.credentials.user=''",
+    "mapping.package.credentials.password=''",
+    "mapping.package.local=mapping-swl-loinc.zip"})
 public class TerminologyUpdateProcessorTests extends BaseProcessorTests {
 
     @Autowired

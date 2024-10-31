@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "listeners=PLAINTEXT://localhost:9092", "port=9092"})
 @SpringBootTest(useMainMethod = SpringBootTest.UseMainMethod.ALWAYS,
     properties = {
-        "mapping.loinc.local=mapping-swl-loinc.zip",
+        "mapping.package.local=mapping-swl-loinc.zip",
         "spring.cloud.stream.kafka.streams.binder.replicationFactor=1",
         "spring.cloud.stream.kafka.streams.binder.minPartitionCount=1",
         "spring.cloud.stream.bindings.process-in-0.destination=lab"})

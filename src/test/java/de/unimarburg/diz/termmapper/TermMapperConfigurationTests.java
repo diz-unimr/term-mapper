@@ -14,10 +14,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EmbeddedKafka(partitions = 1, brokerProperties = {
     "listeners=PLAINTEXT://localhost:9092", "port=9092"})
 @SpringBootTest
-@TestPropertySource(properties = {"mapping.loinc.version=''",
-    "mapping.loinc.credentials.user=''",
-    "mapping.loinc.credentials.password=''",
-    "mapping.loinc.local=mapping-swl-loinc.zip",
+@TestPropertySource(properties = {"mapping.package.version=''",
+    "mapping.package.credentials.user=''",
+    "mapping.package.credentials.password=''",
+    "mapping.package.local=mapping-swl-loinc.zip",
     "spring.cloud.stream.kafka.streams.binder.replicationFactor=1",
     "spring.cloud.stream.kafka.streams.binder.minPartitionCount=1",
     "spring.cloud.stream.bindings.process-in-0.destination=lab"})
