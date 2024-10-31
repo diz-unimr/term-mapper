@@ -26,7 +26,7 @@ RUN [\
 USER nonroot
 
 
-WORKDIR /opt/lab-to-fhir
+WORKDIR /opt/term-mapper
 COPY --from=build /home/gradle/src/dependencies/ ./
 COPY --from=build /home/gradle/src/spring-boot-loader/ ./
 COPY --from=build /home/gradle/src/application/ ./

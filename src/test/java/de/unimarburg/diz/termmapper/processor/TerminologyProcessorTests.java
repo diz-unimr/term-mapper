@@ -18,10 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
     TerminologyProcessor.class,
     SnomedMapper.class, LoincMapper.class, FhirConfiguration.class,
     MappingConfiguration.class})
-@TestPropertySource(properties = {"mapping.loinc.version=''",
-    "mapping.loinc.credentials.user=''",
-    "mapping.loinc.credentials.password=''",
-    "mapping.loinc.local=mapping-swl-loinc.zip"})
+@TestPropertySource(properties = {"mapping.pkg.version=''",
+    "mapping.pkg.credentials.user=''",
+    "mapping.pkg.credentials.password=''",
+    "mapping.pkg.local=mapping-swl-loinc.zip"})
 
 public class TerminologyProcessorTests extends BaseProcessorTests {
 
