@@ -6,7 +6,6 @@ import de.unimarburg.diz.termmapper.util.ResourceHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,30 +28,19 @@ public class MappingConfiguration {
     @Bean("mappingPackage")
     public Resource currentMappingFile(MappingProperties mp)
         throws IOException {
-        return getMappingFile(mp
-            .getLoinc()
+        return ResourceHelper.getMappingFile(mp
+            .getPkg()
             .getVersion(), mp
-            .getLoinc()
+            .getPkg()
             .getCredentials()
             .getUser(), mp
-            .getLoinc()
+            .getPkg()
             .getCredentials()
             .getPassword(), mp
-            .getLoinc()
+            .getPkg()
             .getProxy(), mp
-            .getLoinc()
+            .getPkg()
             .getLocal());
-    }
-
-    private Resource getMappingFile(
-        @Value("${mapping.package.version}") String version,
-        @Value("${mapping.package.credentials.user}") String user,
-        @Value("${mapping.package.credentials.password}") String password,
-        @Value("${mapping.package.proxy}") String proxyServer,
-        @Value("${mapping.package.local}") String localPkg) throws IOException {
-
-        return ResourceHelper.getMappingFile(version, user, password,
-            proxyServer, localPkg);
     }
 
     @Bean

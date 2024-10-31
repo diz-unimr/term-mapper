@@ -56,7 +56,7 @@ fhir:
     laboratoryUnitSystem: "https://fhir.diz.uni-marburg.de/CodeSystem/swisslab-unit"
 
 mapping:
-  package:
+  pkg:
     version: "4.0.0"
     credentials:
       user:
