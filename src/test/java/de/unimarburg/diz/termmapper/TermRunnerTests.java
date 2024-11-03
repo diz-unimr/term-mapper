@@ -91,16 +91,17 @@ public class TermRunnerTests {
     void onEventCompletedDeletesConsumer()
         throws ExecutionException, InterruptedException {
         // setup
-        var admin = setupAdminClient();
-        var runner = setupRunner(null);
+        try (var admin = setupAdminClient()) {
+            var runner = setupRunner(null);
 
-        // act
-        runner.onApplicationEvent(new UpdateCompleted(this));
+            // act
+            runner.onApplicationEvent(new UpdateCompleted(this));
 
-        // verify consumer stopped and consumer group deleted
-        verify(endpoint).changeState("update-in-0", State.STOPPED);
-        verify(admin.deleteConsumerGroups(anyCollection())
-            .all()).get();
+            // verify consumer stopped and consumer group deleted
+            verify(endpoint).changeState("update-in-0", State.STOPPED);
+            verify(admin.deleteConsumerGroups(anyCollection())
+                .all()).get();
+        }
     }
 
     @Test

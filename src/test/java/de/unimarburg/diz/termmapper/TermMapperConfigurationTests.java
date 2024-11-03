@@ -24,14 +24,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TermMapperConfigurationTests {
 
     @Autowired
-    private TerminologyProcessor labProcessor;
+    private TerminologyProcessor termProcessor;
 
     @Autowired
     private TerminologyUpdateProcessor updateProcessor;
 
     @Test
     void contexLoads() {
-        assertThat(labProcessor).isNotNull();
+        assertThat(termProcessor).isNotNull();
         assertThat(updateProcessor).isNotNull();
     }
 

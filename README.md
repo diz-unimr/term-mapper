@@ -11,10 +11,11 @@ It currently supports parsing laboratory data from FHIR resources
 
 ## Terminology mappings
 
-On startup, the term-mapper loads data from a [mapping package]
-(https://gitlab.diz.uni-marburg.de/mapping/loinc-mapping/-/packages) which consists of a csv file and metadata.
+On startup, the term-mapper loads data from a
+[mapping package](https://gitlab.diz.uni-marburg.de/mapping/loinc-mapping/-/packages)
+which consists of a csv file and metadata.
 
-Observation resource values are then mapped using a fixed mapping between 
+Observation resource values are then mapped using a fixed mapping between
 terminologies.
 
 ## LOINC
