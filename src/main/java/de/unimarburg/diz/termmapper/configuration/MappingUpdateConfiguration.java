@@ -74,10 +74,10 @@ public class MappingUpdateConfiguration {
         // get last version's mapping
         var lastMap = SwisslabMap.buildFromPackage(
             ResourceHelper.getMappingFile(lastUpdate.getVersion(),
-                mappingProperties.getLoinc().getCredentials().getUser(),
-                mappingProperties.getLoinc().getCredentials().getPassword(),
-                mappingProperties.getLoinc().getProxy(),
-                mappingProperties.getLoinc().getLocal()));
+                mappingProperties.getPkg().getCredentials().getUser(),
+                mappingProperties.getPkg().getCredentials().getPassword(),
+                mappingProperties.getPkg().getProxy(),
+                mappingProperties.getPkg().getLocal()));
         // ceate diff
         var updates = swisslabMap.diff(lastMap);
         var update =
