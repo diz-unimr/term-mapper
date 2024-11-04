@@ -7,10 +7,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.io.Serializable;
 
 @Getter
+@Setter
 @ConfigurationProperties(prefix = "mapping")
 public class MappingProperties implements Serializable {
 
     private final Package pkg = new Package();
+    private boolean verifyUnits;
 
     @Getter
     @Setter

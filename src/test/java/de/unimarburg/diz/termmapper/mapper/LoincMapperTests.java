@@ -2,6 +2,7 @@ package de.unimarburg.diz.termmapper.mapper;
 
 import de.unimarburg.diz.termmapper.configuration.FhirConfiguration;
 import de.unimarburg.diz.termmapper.configuration.FhirProperties;
+import de.unimarburg.diz.termmapper.configuration.MappingProperties;
 import de.unimarburg.diz.termmapper.mapper.LoincMapperTests.LoincMapperTestConfiguration;
 import de.unimarburg.diz.termmapper.model.SwisslabMap;
 import de.unimarburg.diz.termmapper.model.SwisslabMapEntry;
@@ -27,7 +28,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@SpringBootTest(classes = {FhirConfiguration.class,
+@SpringBootTest(classes = {FhirConfiguration.class, MappingProperties.class,
     LoincMapperTestConfiguration.class})
 public class LoincMapperTests {
 
@@ -38,6 +39,9 @@ public class LoincMapperTests {
     @Autowired
     private FhirProperties fhirProperties;
 
+    @Autowired
+    private MappingProperties mappingProperties;
+
     @SuppressWarnings("checkstyle:LineLength")
     private static Stream<Arguments> mapCodeAndQuantityProvidesMetaCodeArguments() {
         return Stream.of(Arguments.of("TEST", List.of(), List.of("1000-0")),
@@ -46,6 +50,15 @@ public class LoincMapperTests {
             // fallback to null source
             Arguments.of("TEST", List.of("not-mapped"), List.of("1000-0")),
             Arguments.of("UNKNOWN", List.of(), List.of()));
+    }
+
+    private static Stream<Arguments> ucumSourceIsCheckedArguments() {
+        return Stream.of(
+            // mapped
+            Arguments.of(new Quantity().setCode("old unit"), "mmol/L"),
+            Arguments.of(new Quantity().setCode("mmol/L"), "mmol/L"),
+            // not mapped
+            Arguments.of(new Quantity().setCode("mmol/l"), "mmol/l"));
     }
 
     @BeforeAll
@@ -131,12 +144,35 @@ public class LoincMapperTests {
             .containsOnly("mmol/L");
     }
 
+    @ParameterizedTest
+    @MethodSource("ucumSourceIsCheckedArguments")
+    public void ucumSourceIsChecked(Quantity quantity, String expectedUnit) {
+        mappingProperties.setVerifyUnits(true);
+
+        // arrange
+        var obs = new Observation()
+            .setCode(new CodeableConcept().addCoding(new Coding(fhirProperties
+                .getSystems()
+                .getLaboratorySystem(), "TEST", null)))
+            .setValue(quantity)
+            .addReferenceRange(new ObservationReferenceRangeComponent()
+                .setLow(quantity)
+                .setHigh(quantity));
+
+        // act
+        loincMapper.map(obs, null);
+
+        // assert
+        assertThat(obs.getValueQuantity().getCode()).isEqualTo(expectedUnit);
+    }
+
     @TestConfiguration
     static class LoincMapperTestConfiguration {
 
         @Bean
-        public LoincMapper loincMapper(FhirProperties fhirProperties) {
-            return new LoincMapper(fhirProperties, testMap);
+        public LoincMapper loincMapper(FhirProperties fhirProperties,
+                                       MappingProperties mappingProperties) {
+            return new LoincMapper(fhirProperties, mappingProperties, testMap);
         }
     }
 }
