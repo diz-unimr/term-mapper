@@ -1,6 +1,7 @@
 package de.unimarburg.diz.termmapper.mapper;
 
 import de.unimarburg.diz.termmapper.configuration.FhirProperties;
+import de.unimarburg.diz.termmapper.configuration.MappingProperties;
 import de.unimarburg.diz.termmapper.metric.TagCounter;
 import de.unimarburg.diz.termmapper.model.MetaCode;
 import de.unimarburg.diz.termmapper.model.SwisslabMap;
@@ -29,11 +30,13 @@ public class LoincMapper extends SwisslabMapper {
         .collect(Collectors.toSet());
     private final TagCounter unmappedCodes;
     private static final String SYSTEM = "http://loinc.org";
+    private final MappingProperties mappingProps;
 
     @Autowired
     public LoincMapper(FhirProperties fhirProperties,
-                       SwisslabMap swlMap) {
+                       MappingProperties mappingProps, SwisslabMap swlMap) {
         super(fhirProperties, swlMap);
+        this.mappingProps = mappingProps;
         this.unmappedCodes = new TagCounter("loinc_unmapped",
             "Number of unmapped resources by code", "swl_code",
             Metrics.globalRegistry);
@@ -77,20 +80,22 @@ public class LoincMapper extends SwisslabMapper {
                     return;
                 }
 
-                var obsQuantity = obs.getValueQuantity();
-                if (!e.getUcum().equals(obsQuantity.getUnit())
-                    && !e.getSwlUnit().equals(obsQuantity.getUnit())) {
+                // verify source unit
+                if (mappingProps.isVerifyUnits()
+                    && !(e.getUcum().equals(obs.getValueQuantity().getCode())
+                    ||
+                    e.getSwlUnit().equals(obs.getValueQuantity().getCode()))) {
                     // no ucum mapping exists or swl units don't match
-                    log.warn("Swisslab unit ({}) doesn't match source unit "
-                            + "from UCUM mapping: {} -> {}",
-                        obsQuantity.getUnit(), e.getSwlUnit(),
+                    log.warn("Swisslab unit ({}) doesn't match source or "
+                            + "target unit from UCUM mapping: {} -> {}",
+                        obs.getValueQuantity().getCode(), e.getSwlUnit(),
                         e.getUcum());
                     return;
                 }
 
+                // keep (human-readable) unit and map code to UCUM
                 obs
                     .getValueQuantity()
-                    .setUnit(obsQuantity.getUnit())
                     .setCode(e.getUcum())
                     .setSystem("http://unitsofmeasure.org");
                 obs
@@ -99,14 +104,12 @@ public class LoincMapper extends SwisslabMapper {
                         if (quantity.hasLow()) {
                             quantity
                                 .getLow()
-                                .setUnit(obsQuantity.getUnit())
                                 .setCode(e.getUcum())
                                 .setSystem("http://unitsofmeasure.org");
                         }
                         if (quantity.hasHigh()) {
                             quantity
                                 .getHigh()
-                                .setUnit(obsQuantity.getUnit())
                                 .setCode(e.getUcum())
                                 .setSystem("http://unitsofmeasure.org");
                         }
