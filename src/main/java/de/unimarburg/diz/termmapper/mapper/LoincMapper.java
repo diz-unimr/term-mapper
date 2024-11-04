@@ -71,26 +71,26 @@ public class LoincMapper extends SwisslabMapper {
                     .getCoding()
                     .add(0, loincCoding);
 
-                // TODO keep original unit in extension(?) or 'value'
-
                 // map ucum in value and referenceRange(s)
                 if (e.getUcum() == null || !obs.hasValueQuantity()) {
                     // no ucum mapping exists or value is no quantity
                     return;
                 }
 
-                if (!e.getSwlUnit().equals(obs.getValueQuantity().getUnit())) {
+                var obsQuantity = obs.getValueQuantity();
+                if (!e.getUcum().equals(obsQuantity.getUnit())
+                    && !e.getSwlUnit().equals(obsQuantity.getUnit())) {
                     // no ucum mapping exists or swl units don't match
                     log.warn("Swisslab unit ({}) doesn't match source unit "
                             + "from UCUM mapping: {} -> {}",
-                        obs.getValueQuantity().getUnit(), e.getSwlUnit(),
+                        obsQuantity.getUnit(), e.getSwlUnit(),
                         e.getUcum());
                     return;
                 }
 
                 obs
                     .getValueQuantity()
-                    .setUnit(obs.getValueQuantity().getUnit())
+                    .setUnit(obsQuantity.getUnit())
                     .setCode(e.getUcum())
                     .setSystem("http://unitsofmeasure.org");
                 obs
@@ -99,14 +99,14 @@ public class LoincMapper extends SwisslabMapper {
                         if (quantity.hasLow()) {
                             quantity
                                 .getLow()
-                                .setUnit(obs.getValueQuantity().getUnit())
+                                .setUnit(obsQuantity.getUnit())
                                 .setCode(e.getUcum())
                                 .setSystem("http://unitsofmeasure.org");
                         }
                         if (quantity.hasHigh()) {
                             quantity
                                 .getHigh()
-                                .setUnit(obs.getValueQuantity().getUnit())
+                                .setUnit(obsQuantity.getUnit())
                                 .setCode(e.getUcum())
                                 .setSystem("http://unitsofmeasure.org");
                         }
