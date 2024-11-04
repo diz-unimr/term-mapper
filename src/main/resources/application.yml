@@ -19,12 +19,14 @@ spring:
           destination: ${INPUT_TOPIC:lab-fhir}
           consumer:
             auto-startup: false
+            concurrency: ${CONSUMER_CONCURRENCY:1}
         process-out-0:
           destination: ${OUTPUT_TOPIC:lab-fhir-term}
         update-in-0:
           destination: ${INPUT_TOPIC:lab-fhir}
           consumer:
             auto-startup: false
+            concurrency: ${CONSUMER_CONCURRENCY:1}
         update-out-0:
           destination: ${OUTPUT_TOPIC:lab-fhir-term}
       kafka:
@@ -41,7 +43,7 @@ spring:
               security.protocol: ${SECURITY_PROTOCOL:PLAINTEXT}
               spring.json.use.type.headers: "false"
             replicationFactor: 3
-            minPartitionCount: 3
+            minPartitionCount: ${CONSUMER_CONCURRENCY:1}
 
 fhir:
   systems:
