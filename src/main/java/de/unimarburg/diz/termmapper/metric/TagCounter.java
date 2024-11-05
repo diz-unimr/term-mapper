@@ -3,8 +3,8 @@ package de.unimarburg.diz.termmapper.metric;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TagCounter {
 
@@ -12,7 +12,7 @@ public class TagCounter {
     private final String description;
     private final String tag;
     private final MeterRegistry registry;
-    private final Map<String, Counter> counters = new HashMap<>();
+    private final Map<String, Counter> counters = new ConcurrentHashMap<>();
 
     public TagCounter(String name, String description, String tag,
                       MeterRegistry registry) {
