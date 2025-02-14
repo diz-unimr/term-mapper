@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.cloud.stream.binding.BindingsLifecycleController;
 import org.springframework.cloud.stream.binding.BindingsLifecycleController.State;
-import org.springframework.cloud.stream.endpoint.BindingsEndpoint;
 import org.springframework.context.event.EventListener;
 import org.springframework.retry.RetryCallback;
 import org.springframework.retry.RetryContext;
@@ -32,14 +32,14 @@ public class TermMapperRunner implements ApplicationRunner {
     static final long RETRY_BACKOFF_PERIOD = 2_000L;
     private static final Logger LOG =
         LoggerFactory.getLogger(TermMapperRunner.class);
-    private final BindingsEndpoint endpoint;
+    private final BindingsLifecycleController endpoint;
     private final AdminClientProvider kafkaAdmin;
     private final MappingInfo mappingInfo;
     private final String updateGroup;
     private final RetryTemplate retryTemplate;
 
     @SuppressWarnings("checkstyle:LineLength")
-    public TermMapperRunner(BindingsEndpoint endpoint,
+    public TermMapperRunner(BindingsLifecycleController endpoint,
                             AdminClientProvider kafkaAdmin,
                             @Nullable MappingInfo mappingInfo,
                             @Value(
