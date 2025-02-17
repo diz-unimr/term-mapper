@@ -13,20 +13,24 @@ public class SwisslabMapTests {
         var original = new SwisslabMap(null);
         original.put("FOO", new SwisslabMapEntry.Builder()
             .withCode("1000-0")
+            .withSystem("http://loinc.org")
             .withUcum("mmol/L")
             .build());
         original.put("BAR", new SwisslabMapEntry.Builder()
             .withCode("1000-0")
+            .withSystem("http://loinc.org")
             .withUcum("mmol/L")
             .build());
 
         var from = new SwisslabMap(null);
         from.put("FOO", new SwisslabMapEntry.Builder()
             .withCode("1000-0")
+            .withSystem("http://loinc.org")
             .withUcum("mmol/L")
             .build());
         from.put("BAR", new SwisslabMapEntry.Builder()
             .withCode("1111-0")
+            .withSystem("http://loinc.org")
             .withUcum("mmol/L")
             .build());
 
@@ -45,6 +49,7 @@ public class SwisslabMapTests {
             .withCode("loinc")
             .withSystem("loinc")
             .build());
+
         // loinc with meta
         map.put("TEST", new SwisslabMapEntry.Builder()
             .withCode("loinc")

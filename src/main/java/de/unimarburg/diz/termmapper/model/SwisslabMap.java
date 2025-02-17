@@ -132,10 +132,10 @@ public class SwisslabMap {
         var entries = internalMap.computeIfAbsent(code,
             s -> new TreeSet<>(
                 comparing(SwisslabMapEntry::getSystem)
-                    .thenComparing(SwisslabMapEntry::getCode)
                     .thenComparing(
                         SwisslabMapEntry::getMeta,
-                        nullsLast(naturalOrder()))));
+                        nullsLast(naturalOrder()))
+                    .thenComparing(SwisslabMapEntry::getCode)));
         entries.add(entry);
     }
 
