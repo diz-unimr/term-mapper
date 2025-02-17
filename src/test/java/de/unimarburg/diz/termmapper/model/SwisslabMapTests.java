@@ -34,4 +34,34 @@ public class SwisslabMapTests {
 
         assertThat(diff).isEqualTo(Set.of("BAR"));
     }
+
+    @SuppressWarnings("checkstyle:MagicNumber")
+    @Test
+    void putAddsCodesBySystemCodeAndMeta() {
+        var map = new SwisslabMap(null);
+
+        // loinc
+        map.put("TEST", new SwisslabMapEntry.Builder()
+            .withCode("loinc")
+            .withSystem("loinc")
+            .build());
+        // loinc with meta
+        map.put("TEST", new SwisslabMapEntry.Builder()
+            .withCode("loinc")
+            .withSystem("loinc")
+            .withMeta("meta")
+            .build());
+
+        // snomed with different codes
+        map.put("TEST", new SwisslabMapEntry.Builder()
+            .withCode("one")
+            .withSystem("snomed")
+            .build());
+        map.put("TEST", new SwisslabMapEntry.Builder()
+            .withCode("two")
+            .withSystem("snomed")
+            .build());
+
+        assertThat(map.getInternalMap().get("TEST")).hasSize(4);
+    }
 }

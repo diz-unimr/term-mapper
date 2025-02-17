@@ -131,8 +131,11 @@ public class SwisslabMap {
         // source: entries are ordered with null values first
         var entries = internalMap.computeIfAbsent(code,
             s -> new TreeSet<>(
-                comparing(SwisslabMapEntry::getMeta,
-                    nullsLast(naturalOrder()))));
+                comparing(SwisslabMapEntry::getSystem)
+                    .thenComparing(SwisslabMapEntry::getCode)
+                    .thenComparing(
+                        SwisslabMapEntry::getMeta,
+                        nullsLast(naturalOrder()))));
         entries.add(entry);
     }
 
