@@ -12,15 +12,22 @@ public class MappingUpdate implements Serializable {
     private String version;
     private String oldVersion;
     private Collection<String> updates;
+    private boolean manual;
 
     public MappingUpdate() {
     }
 
     public MappingUpdate(String actualVersion, String oldVersion,
                          Collection<String> updates) {
+        this(actualVersion, oldVersion, updates, false);
+    }
+
+    public MappingUpdate(String actualVersion, String oldVersion,
+                         Collection<String> updates, boolean manual) {
         this.version = actualVersion;
         this.oldVersion = oldVersion;
         this.updates = updates;
+        this.manual = manual;
     }
 
     public String getVersion() {
@@ -48,6 +55,15 @@ public class MappingUpdate implements Serializable {
     @JsonSetter("updates")
     public void setUpdates(List<String> updates) {
         this.updates = updates;
+    }
+
+    public boolean isManual() {
+        return manual;
+    }
+
+    @JsonSetter("manual")
+    public void setManual(boolean manual) {
+        this.manual = manual;
     }
 
     @Override

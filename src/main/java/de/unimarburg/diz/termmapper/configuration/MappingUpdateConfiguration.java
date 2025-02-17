@@ -62,9 +62,22 @@ public class MappingUpdateConfiguration {
                     + "No update necesssary", configuredVersion,
                 lastUpdate.getVersion());
 
+            // update in progress, continue
             if (!labOffsets.updateOffsets().isEmpty()) {
-                // update in progress, continue
                 return new MappingInfo(lastUpdate, true);
+            }
+
+            // manual update triggered by setting both version
+            // and current version to the same ref and providing codes to
+            // update via MappingUpdate.updates. 'Manual' flag must be true.
+            if (Objects.equals(lastUpdate.getVersion(),
+                lastUpdate.getOldVersion()) && lastUpdate.isManual()) {
+
+                // save with manual flag removed (should only _start_ once)
+                lastUpdate.setManual(false);
+                saveMappingUpdate(producer, lastUpdate, key);
+
+                return new MappingInfo(lastUpdate, false);
             }
 
             return null;
