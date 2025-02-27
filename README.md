@@ -66,11 +66,11 @@ Additional application properties can be set by overriding values form the [appl
 
 ## Mapping updates
 
-In addition to the regular Kafka processor this application uses a separate
+In addition to the regular Kafka processor this application uses an
 update processor to apply mapping updates to all records up until the
 current offset state of the regular processor.
 
-The update processor is a separate Kafka consumer/producer and keeps its own
+The update processor is a **separate** Kafka consumer/producer and keeps its own
 offset state in order to be able to resume unfinished updates. On completion, the
 update consumer group is deleted.
 
