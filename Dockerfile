@@ -11,7 +11,7 @@ FROM gcr.io/distroless/java17:nonroot
 USER root
 COPY cert/RKA_CA.crt /tmp/RKA_CA.crt
 RUN [\
- "/usr/lib/jvm/java-17-openjdk-amd64/bin/keytool",\
+ "/usr/lib/jvm/temurin-17-jdk-amd64/bin/keytool",\
  "-import",\
  "-trustcacerts",\
  "-cacerts",\
