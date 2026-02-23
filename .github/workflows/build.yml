@@ -3,10 +3,13 @@ name: build & test
 
 "on":
   push:
+    branches:
+      - main
+    tags:
+      - "**"
   pull_request:
 
-permissions:
-  contents: write
+permissions: read-all
 
 jobs:
   build:
