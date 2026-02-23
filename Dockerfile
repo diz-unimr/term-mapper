@@ -3,29 +3,15 @@ WORKDIR /home/gradle/src
 ENV GRADLE_USER_HOME=/gradle
 
 COPY . .
-RUN ./gradlew clean build --info && \
+RUN keytool -import -trustcacerts -cacerts -noprompt -storepass changeit \
+    -alias rka_ca -file cert/RKA_CA.crt && \
+    ./gradlew clean build --info && \
     java -Djarmode=layertools -jar build/libs/*.jar extract
 
-FROM gcr.io/distroless/java17:nonroot
+FROM gcr.io/distroless/java17:debug-nonroot
 
-USER root
-COPY cert/RKA_CA.crt /tmp/RKA_CA.crt
-RUN [\
- "/usr/lib/jvm/temurin-17-jdk-amd64/bin/keytool",\
- "-import",\
- "-trustcacerts",\
- "-cacerts",\
- "-noprompt",\
- "-storepass",\
- "changeit",\
- "-alias",\
- "rka_ca",\
- "-file",\
- "/tmp/RKA_CA.crt"\
-]
 USER nonroot
-
-
+COPY --from=build /opt/java/openjdk/lib/security/cacerts /etc/ssl/certs/java/cacerts
 WORKDIR /opt/term-mapper
 COPY --from=build /home/gradle/src/dependencies/ ./
 COPY --from=build /home/gradle/src/spring-boot-loader/ ./
