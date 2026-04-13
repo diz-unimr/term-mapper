@@ -43,7 +43,7 @@ dependencies {
     // metrics
     implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     implementation "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
-    implementation 'io.micrometer:micrometer-registry-prometheus:1.15.0'
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.16.5'
 
     // hapi fhir
     implementation "ca.uhn.hapi.fhir:hapi-fhir-base:$hapiFhirVersion"
